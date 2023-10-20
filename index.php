@@ -10,24 +10,39 @@ $text = $pdf->getText();
 
 $explodedText = explode("- ", $text);
 
+// 1 semestre
+
+// 2 semestre
+
+$serapatedData = [];
 $finalData = [];
+$meses = ["JULHO","AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
 
-// removendo header
-unset($explodedText[0]);
-unset($explodedText[1]);
-
+// removendo footer
 array_pop($explodedText);
 
 foreach ($explodedText as $key => $value)
 {
     if(is_numeric(substr(trim($value), -1)))
     {
-        $finalData[] = $value;
+        foreach ($meses as $mes)
+        {
+            if(strpos($value, $mes))
+            {
+                $finalData[$mes] = [1,2,3,4];
+            }
+        }
+
+        $serapatedData[] = $value;
     }
 }
 
-foreach ($finalData as $key => $value)
+foreach ($serapatedData as $key => $value)
 {
+    
     echo $value;
     echo "<hr>";
 }
+
+var_dump($finalData);
+
