@@ -6,43 +6,69 @@ require("vendor/autoload.php");
 $parser = new \Smalot\PdfParser\Parser();
 $pdf = $parser->parseFile('cronograma-semestral.pdf');
 
-$text = $pdf->getText();
+$pattern = '/\d{2} - .+/';
+$data = array();
 
-$explodedText = explode("- ", $text);
+foreach ($pdf->getPages() as $page) {
 
-// 1 semestre
+    $text = $page->getText();
 
-// 2 semestre
+    preg_match_all($pattern, $text, $matchs);
 
-$serapatedData = [];
-$finalData = [];
-$meses = ["JULHO","AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
-
-// removendo footer
-array_pop($explodedText);
-
-foreach ($explodedText as $key => $value)
-{
-    if(is_numeric(substr(trim($value), -1)))
-    {
-        foreach ($meses as $mes)
-        {
-            if(strpos($value, $mes))
-            {
-                $finalData[$mes] = [1,2,3,4];
-            }
-        }
-
-        $serapatedData[] = $value;
-    }
+    $data = array_merge($data, $matchs[0]);
 }
 
-foreach ($serapatedData as $key => $value)
+foreach ($data as $key => $value)
 {
-    
-    echo $value;
+    echo $key;
     echo "<hr>";
 }
 
-var_dump($finalData);
+// // 2 semestre
+// $serapatedData = [];
+// $finalData = [];
+// $meses = ["JULHO","AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
+// $formatedData = [];
+
+// // removendo footer
+// array_pop($explodedText);
+
+// foreach ($explodedText as $key => $value)
+// {
+//     // pegando apenas os itens que contenham um valor int no final
+//     if(is_numeric(substr(trim($value), -1)))
+//     {
+
+//         $actualDay = substr(trim($value), strlen($value) - 3, 2);
+
+//         // if($key == 1)
+//         // {
+//         //     continue;
+//         // }
+
+//         echo $actualDay." - ".$value;
+//         echo "<hr>";
+
+
+//         // foreach ($meses as $mes)
+//         // {
+//         //     if(strpos($value, $mes))
+//         //     {
+//         //         $finalData[$mes] = [1,2,3,4];
+//         //     }
+//         // }
+
+//         $serapatedData[] = $value;
+//     }
+// }
+
+// // var_dump($formatedData);exit;
+
+// foreach ($formatedData as $key => $value)
+// {
+    
+//     echo $value;
+//     echo "<hr>";
+// }
+
 
