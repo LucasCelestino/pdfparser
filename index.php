@@ -20,9 +20,10 @@ foreach ($pdf->getPages() as $page) {
 
 foreach ($data as $key => $value)
 {
-    echo $key;
-    echo "<hr>";
+    $data[$key] =  str_replace('	', '', $value);;
 }
+
+var_dump($data);
 
 // // 2 semestre
 // $serapatedData = [];
