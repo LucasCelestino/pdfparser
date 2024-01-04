@@ -61,27 +61,35 @@ foreach ($finalres as $key => $value)
 
     if($standard == "a ")
     {
+        // modificando o item que tem um valor por ex: (Dia da Revolução Constitucionalista 10 a) para: (Dia da Revolução Constitucionalista)
         $finalres[$key] = substr($value, 0, -5);
+
+        // pegando esse valor, por ex: 10 a
+        $firstDate = substr($value, -5);
+
+        // pegando a key do item atual e somando + 1, pq o proximo item seria: 31 - Recesso Escolar
+        $correctKey = $key+1;
+
+        // juntando o valor que foi cortado (10 a) e juntando com o proximo item do array para ficar: 10 a 31 - Recesso Escolar
+        $finalres[$correctKey] = $firstDate.''.$finalres[$correctKey];
+    }
+    else
+    {
+        $padrao_data = "/\b\d{2}\/\d{2}\/\d{2}\b/";
+
+        // procurando padrão xx/xx/xx em um item
+        if (preg_match($padrao_data, $value)) {
+            echo $value;
+            echo '<br>';
+        }
     }
 }
 
 
-foreach ($finalres as $key => $value)
-{
-    echo $key.'=>'.$value;
-    echo '<br>';
-}
+// foreach ($finalres as $key => $value)
+// {
+//     echo $key.'=>'.$value;
+//     echo '<br>';
+// }
 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
