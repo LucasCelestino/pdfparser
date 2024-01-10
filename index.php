@@ -4,14 +4,14 @@ require("vendor/autoload.php");
 
 // Parse PDF file and build necessary objects.
 $parser = new \Smalot\PdfParser\Parser();
-$pdf = $parser->parseFile('cronograma-semestral.pdf');
+$pdf = $parser->parseFile('cronograma-semestral-2.pdf');
 
 $pattern = '/\d{2} - .+/';
 $data = array();
 $finalData = array();
 $finalres = array();
-$segundoSemestreMeses = ['julho','agosto','setembro','outubro','novembro','dezembro'];
 $res = array();
+
 
 foreach ($pdf->getPages() as $page) {
 
@@ -54,9 +54,19 @@ foreach ($finalData as $string => $text) {
 // Jeito Correto: 4=>09 - Dia da Revolução Constitucionalista
 // -------------  5=>10 a 31 - Recesso Escolar
 
+$segundoSemestreMeses = ['julho','agosto','setembro','outubro','novembro','dezembro'];
+$primeiroSemestreMeses = ['janeiro', 'fevereiro','março','abril','maio','junho','julho'];
+$auxMeses = 0;
 
 foreach ($finalres as $key => $value)
 {
+
+    if($value == '')
+    {
+        $finalres[$key] = ' '.$primeiroSemestreMeses[$auxMeses];
+        $auxMeses += 1;
+    }
+
     $standard = substr($value, -2);
 
     if($standard == "a ")
@@ -79,17 +89,24 @@ foreach ($finalres as $key => $value)
 
         // procurando padrão xx/xx/xx em um item
         if (preg_match($padrao_data, $value)) {
-            echo $value;
-            echo '<br>';
+            // // removendo o xx/xx/xx do item 
+            $finalres[$key] = substr($value, 0,-8);
+
+            $date = substr($value, -8,8);
+
+            // pegando a key do item atual e somando + 1, pq o proximo item seria: 26 - Matrícula da 2ª Lista de convocação de ingressantes e solicitação de Aproveitamento de Estudos - Vestibular 
+            $correctKey = $key+1;
+
+            $stringForFix = $finalres[$correctKey];
+            $finalres[$correctKey] = $date.''.$stringForFix;
         }
     }
 }
 
-
-// foreach ($finalres as $key => $value)
-// {
-//     echo $key.'=>'.$value;
-//     echo '<br>';
-// }
+foreach ($finalres as $key => $value)
+{
+    echo $key.'=>'.$value;
+    echo '<br>';
+}
 
 ?>
