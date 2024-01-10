@@ -54,9 +54,6 @@ foreach ($finalData as $string => $text) {
 // Jeito Correto: 4=>09 - Dia da Revolução Constitucionalista
 // -------------  5=>10 a 31 - Recesso Escolar
 
-$segundoSemestreMeses = ['JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
-$auxMeses = 0;
-
 foreach ($finalres as $key => $value)
 {
     $standard = substr($value, -2);
@@ -126,21 +123,44 @@ foreach ($finalres as $key => $value)
 
 }
 
-foreach ($finalres as $key => $value)
-{
-    if($value == '')
-    {
-        $finalres[$key] = $segundoSemestreMeses[$auxMeses];
-        $auxMeses += 1;
-    }
+$auxMeses = 0;
 
+// Verificando se existe algum item vazio dentro do $finalres e incrementando a variavel $auxMeses
+foreach ($finalres as $key => $value) { if($value == '') {$auxMeses++;} }
+
+if($auxMeses == 7)
+{
+    $meses = ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO', 'JULHO'];
+    $auxMeses = 0;
+
+    foreach ($finalres as $key => $value)
+    {
+        if($value == '')
+        {
+            $finalres[$key] = $meses[$auxMeses];
+            $auxMeses++;
+        }
+    }
+}
+else
+{
+    $meses = ['JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
+    $auxMeses = 0;
+
+    foreach ($finalres as $key => $value)
+    {
+        if($value == '')
+        {
+            $finalres[$key] = $meses[$auxMeses];
+            $auxMeses++;
+        }
+    }
 }
 
 foreach ($finalres as $key => $value)
 {
-    echo $key.'=>'.$value;
+    echo $value;
     echo '<br>';
 
 }
-
 ?>
