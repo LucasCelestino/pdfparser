@@ -54,19 +54,11 @@ foreach ($finalData as $string => $text) {
 // Jeito Correto: 4=>09 - Dia da Revolução Constitucionalista
 // -------------  5=>10 a 31 - Recesso Escolar
 
-$segundoSemestreMeses = ['julho','agosto','setembro','outubro','novembro','dezembro'];
-$primeiroSemestreMeses = ['janeiro', 'fevereiro','março','abril','maio','junho','julho'];
+$segundoSemestreMeses = ['JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
 $auxMeses = 0;
 
 foreach ($finalres as $key => $value)
 {
-
-    if($value == '')
-    {
-        $finalres[$key] = ' '.$primeiroSemestreMeses[$auxMeses];
-        $auxMeses += 1;
-    }
-
     $standard = substr($value, -2);
 
     if($standard == "a ")
@@ -103,10 +95,52 @@ foreach ($finalres as $key => $value)
     }
 }
 
+// Verificando se alguma string acabou sendo cortada
+foreach ($finalres as $key => $value)
+{
+    $primeiroCaractere = substr($value, 0, 1);
+
+    if(ctype_alpha($primeiroCaractere))
+    {
+        // cula 16 - Compensação da carga horária de quinta-feira a fim de que se completem as 20 semanas letivas
+        // 16 - Compensação da carga horária de quinta-feira a fim de que se completem as 20 semanas letivas
+        // cortando o (cula) da string e reatribuindo o valor
+        $finalres[$key] = substr($value, 5);
+
+        // pegando o indice anterior para inserir a string no item correto
+        $correctKey = $key-1;
+
+
+        // pegando o item correto
+        // 11 - Prazo máximo para Aplicação de Exames de Proficiência sem possibilidade de acomodação de matrí
+        $stringForFix = $finalres[$correctKey];
+
+        // pegando os 4 primeiros caracteres do item atual (cula) ^
+        $firstDate = substr($value, 0, 4);
+
+        // inserindo 
+        // 11 - Prazo máximo para Aplicação de Exames de Proficiência sem possibilidade de acomodação de matrícula
+        $finalres[$correctKey] = $stringForFix.$firstDate;
+
+    }
+
+}
+
+foreach ($finalres as $key => $value)
+{
+    if($value == '')
+    {
+        $finalres[$key] = $segundoSemestreMeses[$auxMeses];
+        $auxMeses += 1;
+    }
+
+}
+
 foreach ($finalres as $key => $value)
 {
     echo $key.'=>'.$value;
     echo '<br>';
+
 }
 
 ?>
